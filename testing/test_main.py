@@ -20,7 +20,7 @@ class check_class :
       low, mean, up = sample_mean(s,n,p,m)
       return mean
 
-   def third_arg(s,n,p,,m) :
+   def third_arg(s,n,p,m) :
       low, mean, up = sample_mean(s,n,p,m)
       return (( up - mean) / scipy.stats.norm.ppf(0.95) )**2
 
@@ -29,7 +29,7 @@ class UnitTests(unittest.TestCase) :
         inputs, variables = [], []
         for s in range(1,4) : 
             for n in range(6,9) :
-                for i in range(1,5) :
+                for i in range(1,3) :
                     p = i*0.2
                     rat = (1-p)/p
                     prob = ( rat**s - rat**n ) / ( 1 - rat**n )
@@ -43,7 +43,7 @@ class UnitTests(unittest.TestCase) :
         for m in range(1,3) :
             for s in range(1,4) :
                 for n in range(6,9) :
-                    for i in range(1,5) :
+                    for i in range(1,3) :
                         p = i*0.2
                         rat = (1-p)/p
                         prob = ( rat**s - rat**n ) / ( 1 - rat**n )
@@ -57,12 +57,12 @@ class UnitTests(unittest.TestCase) :
         for m in range(1,3) :
             for s in range(1,4) :
                 for n in range(6,9) :
-                    for i in range(1,5) :
+                    for i in range(1,3) :
                         p = i*0.2
                         rat = (1-p)/p
                         prob = ( rat**s - rat**n ) / ( 1 - rat**n )
                         inputs.append((s,n,p,100*m,))
-                        myvar = randomvar( prob, dist="chi2", variance=prob*(1-prob)/(m*100), vmin=0, vmax=1, isinteger=False )
+                        myvar = randomvar( prob, dist="chi2", variance=prob*(1-prob)/(m*100), isinteger=False )
                         variables.append( myvar )
         assert( check_func('first_arg',inputs, variables, modname=check_class) )
 
@@ -71,11 +71,11 @@ class UnitTests(unittest.TestCase) :
         for m in range(1,3) :
             for s in range(1,4) :
                 for n in range(6,9) :
-                    for i in range(1,5) :
+                    for i in range(1,3) :
                         p = i*0.2
                         rat = (1-p)/p
                         prob = ( rat**s - rat**n ) / ( 1 - rat**n )
                         inputs.append((s,n,p,100*m,))
-                        myvar = randomvar( prob, dist="chi2", variance=prob*(1-prob)/(m*100), vmin=0, vmax=1, isinteger=False )
+                        myvar = randomvar( prob, dist="chi2", variance=prob*(1-prob)/(m*100), isinteger=False )
                         variables.append( myvar )
         assert( check_func('third_arg',inputs, variables, modname=check_class) )    
