@@ -15,7 +15,7 @@ def sample_mean(start,n,p,,m) :
   # lower = the 5th percentile of the distribution for the sample mean
   # mean = your sample mean
   # upper = the 95th percentile of the distribution for the sample mean
-  return lower, median, upper
+  return lower, mean, upper
 
 
 l, m, u = sample_mean( 5, 10, 0.3, 200 )
