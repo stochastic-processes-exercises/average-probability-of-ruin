@@ -11,19 +11,6 @@ from AutoFeedback.randomclass import randomvar
 import unittest
 from main import *
 
-class check_class :
-   def first_arg(s,n,p,m) :
-      low, mean, up = sample_mean(s,n,p,m)
-      return (( low - mean) / scipy.stats.norm.ppf(0.05) )**2
-
-   def second_arg(s,n,p,m) :
-      low, mean, up = sample_mean(s,n,p,m)
-      return mean
-
-   def third_arg(s,n,p,m) :
-      low, mean, up = sample_mean(s,n,p,m)
-      return (( up - mean) / scipy.stats.norm.ppf(0.95) )**2
-
 class UnitTests(unittest.TestCase) :
     def test_random_walker(self) : 
         inputs, variables = [], []
@@ -40,42 +27,11 @@ class UnitTests(unittest.TestCase) :
 
     def test_mean(self) : 
         inputs, variables = [], []
-        for m in range(1,3) :
-            for s in range(1,4) :
-                for n in range(6,9) :
-                    for i in range(1,3) :
-                        p = i*0.2
-                        rat = (1-p)/p
-                        prob = ( rat**s - rat**n ) / ( 1 - rat**n )
-                        inputs.append((s,n,p,100*m,))
-                        myvar = randomvar( prob, variance=prob*(1-prob)/(m*100), vmin=0, vmax=1, isinteger=False )
-                        variables.append( myvar )
-        assert( check_func('second_arg',inputs, variables, modname=check_class) )
-
-    def test_lower(self) :
-        inputs, variables = [], []
-        for m in range(1,3) :
-            for s in range(1,4) :
-                for n in range(6,9) :
-                    for i in range(1,3) :
-                        p = i*0.2
-                        rat = (1-p)/p
-                        prob = ( rat**s - rat**n ) / ( 1 - rat**n )
-                        inputs.append((s,n,p,100*m,))
-                        myvar = randomvar( prob, dist="chi2", variance=prob*(1-prob)/(m*100), isinteger=False )
-                        variables.append( myvar )
-        assert( check_func('first_arg',inputs, variables, modname=check_class) )
-
-    def test_upper(self) :
-        inputs, variables = [], []
-        for m in range(1,3) :
-            for s in range(1,4) :
-                for n in range(6,9) :
-                    for i in range(1,3) :
-                        p = i*0.2
-                        rat = (1-p)/p
-                        prob = ( rat**s - rat**n ) / ( 1 - rat**n )
-                        inputs.append((s,n,p,100*m,))
-                        myvar = randomvar( prob, dist="chi2", variance=prob*(1-prob)/(m*100), isinteger=False )
-                        variables.append( myvar )
-        assert( check_func('third_arg',inputs, variables, modname=check_class) )    
+        for i in range(1,3) :
+            p = i*0.3
+            rat = (1-p)/p
+            prob = ( rat**5 - rat**10 ) / ( 1 - rat**10 )
+            inputs.append((5,10,p,100,))
+            myvar = randomvar( prob, variance=prob*(1-prob)/100, dist="conf_lim", vmin=0, vmax=1, dof=99, limit=0.9 )
+            variables.append( myvar )
+        assert( check_func('sample_mean',inputs, variables ) )
